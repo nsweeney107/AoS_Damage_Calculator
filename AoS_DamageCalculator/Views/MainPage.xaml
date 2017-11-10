@@ -1,0 +1,261 @@
+﻿<Page
+    x:Class="AoS_DamageCalculator.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AoS_DamageCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:AoS_DamageCalculator.Models"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListView x:Name="ModelListView" 
+                  ItemsSource="{x:Bind ViewModel.Models}"
+                  SelectionChanged="SelectModel">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:Model">
+                    <TextBlock Text="{x:Bind ModelName}" 
+                               FontSize="24"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.Column="1">
+            <TextBox Text="{x:Bind ViewModel.SelectedModel.ModelName, Mode=TwoWay}"
+                     FontSize="48"
+                     HorizontalAlignment="Center"
+                     FontWeight="ExtraBold"/>
+            <ListView x:Name="WeaponListView" 
+                      ItemsSource="{x:Bind ViewModel.SelectedModel.Weapons, Mode=OneWay}"
+                      SelectionChanged="SelectWeapon">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Weapon">
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind WeaponName}" 
+                               FontSize="24"
+                               FontWeight="Bold" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Attacks: " 
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="{x:Bind NumberOfAttacks}"
+                                           FontSize="16"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="To Hit: " 
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="{x:Bind ToHitNumber}"
+                                           FontSize="16"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="To Wound: " 
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="{x:Bind ToWoundNumber}"
+                                           FontSize="16"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="Rend: " 
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="{x:Bind Rend}"
+                                           FontSize="16"
+                                           Margin="0,0,4,0" />
+                                <TextBlock Text="Damage: " 
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                                <TextBlock Text="{x:Bind Damage}"
+                                           FontSize="16"
+                                           Margin="0,0,4,0" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Save" Click="{x:Bind ViewModel.SaveModel}" Margin="0,0,4,0"/>
+                <Button Content="Cancel" Margin="4,0,0,0" Click="{x:Bind ViewModel.CancelModel}"/>
+            </StackPanel>
+            <TextBox Text="{x:Bind ViewModel.SelectedWeapon.WeaponName, Mode=TwoWay}"
+                     FontSize="36"
+                     HorizontalAlignment="Center"
+                     FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Attacks"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBox Text="{x:Bind ViewModel.SelectedWeapon.NumberOfAttacks, Mode=TwoWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="To Hit"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBox Text="{x:Bind ViewModel.SelectedWeapon.ToHitNumber, Mode=TwoWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="To Wound"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBox Text="{x:Bind ViewModel.SelectedWeapon.ToWoundNumber, Mode=TwoWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Rend"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBox Text="{x:Bind ViewModel.SelectedWeapon.Rend, Mode=TwoWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Damage"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBox Text="{x:Bind ViewModel.SelectedWeapon.Damage, Mode=TwoWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+            
+            <StackPanel HorizontalAlignment="Center">
+                <!--<CheckBox x:Name="SpecialDamageCheckBox">-->
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="On a WOUND value of" VerticalAlignment="Center"/>
+                        <TextBox x:Name="WoundNumberSpecialDamageTextBox" 
+                                 Text="{x:Bind ViewModel.SelectedWeapon.SpecialDamageNumber, Mode=TwoWay}" 
+                                 Margin="4,0,4,0"/>
+                        <TextBlock Text="does" VerticalAlignment="Center"/>
+                        <TextBox x:Name="SpecialDamageNumberTextBox" 
+                                 Text="{x:Bind ViewModel.SelectedWeapon.SpecialDamageDamage, Mode=TwoWay}" Margin="4,0,4,0"/>
+                        <TextBlock Text=" damage" VerticalAlignment="Center"/>
+                    </StackPanel>
+                <!--</CheckBox>-->
+                
+                <!--<CheckBox x:Name="HitMortalWoundsCheckBox"-->
+                          <!--Tapped="HitMortalWoundsCheckBox_Tapped">-->
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="On a HIT value of" VerticalAlignment="Center"/>
+                        <TextBox x:Name="HitNumberMortalTextbox" 
+                                 Text="{x:Bind ViewModel.SelectedWeapon.HitMortalWoundNumber, Mode=TwoWay}" 
+                                 Margin="4,0,4,0"/>
+                        <TextBlock Text="does" VerticalAlignment="Center"/>
+                        <TextBox x:Name="HitMortalDamageTextbox" 
+                                 Text="{x:Bind ViewModel.SelectedWeapon.HitMortalWoundDamage, Mode=TwoWay}" 
+                                 Margin="4,0,4,0"/>
+                        <TextBlock Text=" mortal wounds" VerticalAlignment="Center"/>
+                    </StackPanel>
+                <!--</CheckBox>-->
+
+                <!--<CheckBox x:Name="WoundMortalWoundsCheckBox">-->
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="On a WOUND value of" VerticalAlignment="Center"/>
+                        <TextBox x:Name="WoundNumberMortalTextbox" 
+                                 Text="{x:Bind ViewModel.SelectedWeapon.WoundMortalWoundNumber, Mode=TwoWay}" 
+                                 Margin="4,0,4,0"/>
+                        <TextBlock Text="does" VerticalAlignment="Center"/>
+                        <TextBox x:Name="WoundMortalDamageTextbox" 
+                                 Text="{x:Bind ViewModel.SelectedWeapon.WoundMortalWoundDamage, Mode=TwoWay}" 
+                                 Margin="4,0,4,0"/>
+                        <TextBlock Text=" mortal wounds" VerticalAlignment="Center"/>
+                    </StackPanel>
+                <!--</CheckBox>-->
+            </StackPanel>
+            <StackPanel x:Name="RerollsStackPanel"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                <StackPanel>
+                    <CheckBox x:Name="RerollHitsOneCheckBox" 
+                              Content="Reroll HIT rolls of 1"
+                              Tapped="RerollHitsCheckBox_Tapped"/>
+                    <CheckBox x:Name="RerollWoundsOneCheckBox" 
+                              Content="Reroll WOUND rolls of 1" 
+                              Tapped="RerollWoundsCheckBox_Tapped"/>
+                </StackPanel>
+                <StackPanel Margin="4,0,0,0">
+                    <CheckBox x:Name="RerollAllHitsCheckBox" 
+                              Content="Reroll ALL failed HIT rolls"
+                              Tapped="RerollHitsCheckBox_Tapped"/>
+                    <CheckBox x:Name="RerollAllWoundsCheckBox" 
+                              Content="Reroll ALL failed WOUND rolls"
+                              Tapped="RerollWoundsCheckBox_Tapped"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Add" Click="{x:Bind ViewModel.AddWeapon}" Margin="0,0,4,0"/>
+                <Button Content="Remove" Margin="4,0,0,0" Click="{x:Bind ViewModel.RemoveWeapon}"/>
+            </StackPanel>
+
+            <TextBlock Text="Expected Damage"
+                           FontSize="36"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center" 
+                       Margin="0,12,0,0" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="3+"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{x:Bind ViewModel.ThreePlusArmor, Mode=OneWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="4+"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{x:Bind ViewModel.FourPlusArmor, Mode=OneWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="5+"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{x:Bind ViewModel.FivePlusArmor, Mode=OneWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="6+"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{x:Bind ViewModel.SixPlusArmor, Mode=OneWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Text="AVG"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Text="{x:Bind ViewModel.AverageWounds, Mode=OneWay}"
+                             FontSize="24"
+                             HorizontalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

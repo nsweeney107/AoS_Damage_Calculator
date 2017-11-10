@@ -1,0 +1,1 @@
+C:\Users\NateDev\Documents\Visual Studio 2017\Projects\AoS_DamageCalculator\AoS_DamageCalculator\AoS_DamageCalculator.csproj;x86
